@@ -1,0 +1,3 @@
+[submodule "vendor/plugins/active_record_uuid"]
+	path = vendor/plugins/active_record_uuid
+	url = git://github.com/gabrielg/active_record_uuid.git

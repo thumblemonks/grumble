@@ -152,7 +152,19 @@ class GrumblesControllerTest < ActionController::TestCase
           deny @json_grumble['created_at'].blank?
         end
       end # with valid grumble attributes
-      
+
+      context "with invalid grumble attributes" do
+        setup do
+          grumble_attrs = Factory.attributes_for(:grumble).except(:subject)
+          json_response { post :create, :target_id => @target.uri, :grumble => grumble_attrs }
+        end
+        
+        should "return a 406 not acceptable" do
+          assert_response :not_acceptable
+        end
+        
+      end
+            
     end # by a non registered user
     
   end # POST request with valid target

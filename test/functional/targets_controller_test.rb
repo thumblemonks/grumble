@@ -41,16 +41,13 @@ class TargetsControllerTest < ActionController::TestCase
     end # with a valid URI
     
     context "exception handling" do
-      setup do
-        rescue_action_in_public!
-      end
       
-      should_eventually "return a 406 status with a non HTTP or HTTPS url except rescue_action_in_public! is fucked" do
+      should "return a 406 status with a non HTTP or HTTPS url except rescue_action_in_public! is fucked" do
         get :show, :target_id => "git://www.example.com/posts/12"
         assert_response :not_acceptable
       end
     
-      should_eventually "return a 404 with no URI except rescue_action_in_public! is fucked" do
+      should "return a 404 with no URI except rescue_action_in_public! is fucked" do
         get :show
         assert_response :missing
       end

@@ -1,6 +1,7 @@
 class GrumblesController < ApplicationController
   before_filter :load_target
-  
+  rescue_from ActiveRecord::RecordInvalid,  :with => :record_invalid
+    
   def index
     grumbles = @target.grumbles.map { |grumble| grumble_attributes(grumble) }
     render_json({:grumbles => grumbles}, :callback => 'getGrumbles')
@@ -8,12 +9,8 @@ class GrumblesController < ApplicationController
 
   def create
     grumble = @target.grumbles.build(params[:grumble].slice(:subject, :body, :anon_grumbler_name))
-    if grumble.save
-      #status(201)
-      render_json({:grumble => grumble_attributes(grumble)}, :callback => 'grumbleCreated', :status => :created)
-    else
-      throw(:halt, [406, [:invalid_record, grumble]])
-    end
+    grumble.save!
+    render_json({:grumble => grumble_attributes(grumble)}, :callback => 'grumbleCreated', :status => :created)
   end
   
 private

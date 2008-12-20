@@ -12,13 +12,14 @@ class ApplicationController < ActionController::Base
 private
 
   def load_target
-    if target_id = params[:target_id]
-      @target = Target.find_or_initialize_by_uri(params[:target_id])
-      @target.save if @target.new_record?
-      raise ActiveRecord::RecordInvalid.new(@target) unless @target.valid?
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    raise(ActiveRecord::RecordNotFound) unless target_id = params[:target_id] 
+    @target = Target.find_or_initialize_by_uri(params[:target_id])
+    @target.new_record? ? @target.save! : true
+  end
+  
+  def record_invalid(exception)
+    record = exception.record
+    render_json({:errors => record.errors.to_a}, :status => :not_acceptable)
   end
   
   def render_json(obj, opts = {})

@@ -1,4 +1,21 @@
 ActionController::Routing::Routes.draw do |map|
+
+  #     targets GET    /targets(.:format)          {:controller=>"targets", :action=>"index"}
+  #             POST   /targets(.:format)          {:controller=>"targets", :action=>"create"}
+  #  new_target GET    /targets/new(.:format)      {:controller=>"targets", :action=>"new"}
+  # edit_target GET    /targets/:id/edit(.:format) {:controller=>"targets", :action=>"edit"}
+  #      target GET    /targets/:id(.:format)      {:controller=>"targets", :action=>"show"}
+  #             PUT    /targets/:id(.:format)      {:controller=>"targets", :action=>"update"}
+  #             DELETE /targets/:id(.:format)      {:controller=>"targets", :action=>"destroy"}
+  map.new_target '/targets',            :controller => 'targets', :action => 'new'
+  map.target     '/targets/:target_id', :controller => 'targets', :action => 'show'
+  
+  map.new_grumble '/targets/:target_id/grumbles/new', :controller => 'grumbles', :action => 'new'
+  map.grumbles    '/targets/:target_id/grumbles',     :controller => 'grumbles', :action => 'index'
+  map.grumble     '/targets/:target_id/grumbles/:id', :controller => 'grumbles', :action => 'show'
+  
+  map.grumbler    '/grumblers/:id',                   :controller => 'grumblers', :action => 'show'
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

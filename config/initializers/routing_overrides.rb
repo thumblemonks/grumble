@@ -1,0 +1,1 @@
+#ActionController::Routing::SEPARATORS.delete('.')

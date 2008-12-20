@@ -16,6 +16,10 @@ class Grumble < ActiveRecord::Base
     !grumbler.nil?
   end
 
+  def to_param
+    uuid
+  end
+  
 private 
 
   def set_uuid  

@@ -6,6 +6,9 @@ class Target < ActiveRecord::Base
   validate :validate_uri
   has_many :grumbles, :order => 'created_at DESC'
 
+  def to_param
+    uri
+  end
 private
 
   def validate_uri

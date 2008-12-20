@@ -35,6 +35,10 @@ class GrumbleTest < ActiveSupport::TestCase
     setup { @grumble = Factory(:grumble) }
     should_require_unique_attributes :uuid
     
+    should "return the uuid when converting to a param" do
+      assert_equal @grumble.uuid, @grumble.to_param
+    end
+    
     context "with a registered grumbler" do
       
       should "delegate grumbler_name to the grumbler if present" do

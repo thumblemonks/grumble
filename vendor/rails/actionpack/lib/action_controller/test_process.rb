@@ -264,7 +264,12 @@ module ActionController #:nodoc:
     #
     #   assert_equal ['AuthorOfNewPage'], r.cookies['author'].value
     def cookies
-      headers['cookie'].inject({}) { |hash, cookie| hash[cookie.name] = cookie; hash }
+      cookies = {}
+      Array(headers['Set-Cookie']).each do |cookie|
+        key, value = cookie.split(";").first.split("=")
+        cookies[key] = [value].compact
+      end
+      cookies
     end
 
     # Returns binary content (downloadable file), converted to a String
@@ -285,8 +290,8 @@ module ActionController #:nodoc:
   # TestResponse, which represent the HTTP response results of the requested
   # controller actions.
   #
-  # See AbstractResponse for more information on controller response objects.
-  class TestResponse < AbstractResponse
+  # See Response for more information on controller response objects.
+  class TestResponse < Response
     include TestResponseBehavior
 
     def recycle!
@@ -430,7 +435,7 @@ module ActionController #:nodoc:
     end
 
     def session
-      @response.session
+      @request.session
     end
 
     def flash

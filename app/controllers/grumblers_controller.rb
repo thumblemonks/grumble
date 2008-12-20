@@ -1,0 +1,2 @@
+class GrumblersController < ApplicationController
+end

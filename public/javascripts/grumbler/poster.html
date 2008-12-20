@@ -5,14 +5,14 @@
   <title>Poster</title>
   <script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
-    var postGrumbles = new Template('/grumbleables/#{grumbleable}/grumbles');
+    var postGrumbles = new Template('/targets/#{target}/grumbles');
     var passedData = window.name.evalJSON();
-    new Ajax.Request(postGrumbles.evaluate({grumbleable: passedData.grumbleable}), {
+    new Ajax.Request(postGrumbles.evaluate({target: passedData.target}), {
       method: 'post',
       parameters: passedData.grumble_data,
       onSuccess: function(transport) {
         window.name = $H(transport.responseText.evalJSON()).merge({status: 'successful'}).toJSON();
-        var newLoc = (decodeURIComponent(passedData.grumbleable).split('/', 3).concat(['favicon.ico#grumbleDone'])).join('/');          
+        var newLoc = (decodeURIComponent(passedData.target).split('/', 3).concat(['favicon.ico#grumbleDone'])).join('/');          
         window.location = newLoc;                                         
       }
     });

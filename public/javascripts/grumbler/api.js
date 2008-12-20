@@ -1,27 +1,27 @@
 // FIXME - This is a shitty JS proof of concept.
 var Grumble = {
   urlTemplates: {
-    getGrumbleable: new Template('http://grumble.annealer.org/grumbleables/#{grumbleable}?callback=true&ts=#{ts}'),
-    getGrumbles: new Template('http://grumble.annealer.org/grumbleables/#{grumbleable}/grumbles?callback=true&ts=#{ts}'),
+    getTarget: new Template('http://grumble.annealer.org/targets/#{target}?callback=true&ts=#{ts}'),
+    getGrumbles: new Template('http://grumble.annealer.org/targets/#{target}/grumbles?callback=true&ts=#{ts}'),
     grumblePoster: 'http://grumble.annealer.org/javascripts/grumbler/poster.html'
   },
 
-  getGrumbleable: Prototype.K,
+  getTarget: Prototype.K,
   getGrumbles: Prototype.K,
   grumbleCreated: Prototype.K,
 
-  fetchGrumbleable: function() {
-    var grumbleableAt = this.urlTemplates.getGrumbleable.evaluate({grumbleable: this.currentUri(), ts: this.currentTime()});
-    $('grumbleable_loader').src = grumbleableAt;
+  fetchTarget: function() {
+    var targetAt = this.urlTemplates.getTarget.evaluate({target: this.currentUri(), ts: this.currentTime()});
+    $('target_loader').src = targetAt;
   },
   
   fetchGrumbles: function() {
-    var grumblesAt = this.urlTemplates.getGrumbles.evaluate({grumbleable: this.currentUri(), ts: this.currentTime()});
+    var grumblesAt = this.urlTemplates.getGrumbles.evaluate({target: this.currentUri(), ts: this.currentTime()});
     $('grumble_loader').src = grumblesAt;
   },
   
   postGrumble: function(grumbleData) {
-    var iframeTransport = $H({grumble_data: grumbleData, grumbleable: this.currentUri(), status: 'loading'})
+    var iframeTransport = $H({grumble_data: grumbleData, target: this.currentUri(), status: 'loading'})
     var posterFrame = new Element('iframe', {name: iframeTransport.toJSON(), id: 'grumble_poster', 
                                   src: this.urlTemplates.grumblePoster, style: 'display: none;'});
     var that = this;
@@ -57,10 +57,10 @@ var Grumble = {
 }
 
 document.observe('dom:loaded', function(){
-  var grumbleableLoader = new Element('script', {'type': 'text/javascript', 'id': 'grumbleable_loader'});
+  var targetLoader = new Element('script', {'type': 'text/javascript', 'id': 'target_loader'});
   var grumbleLoader = new Element('script', {'type': 'text/javascript', 'id': 'grumble_loader'});
-  $$('head')[0].appendChild(grumbleableLoader);
+  $$('head')[0].appendChild(targetLoader);
   $$('head')[0].appendChild(grumbleLoader);
-  Grumble.fetchGrumbleable();
+  Grumble.fetchTarget();
   Grumble.fetchGrumbles();
 })

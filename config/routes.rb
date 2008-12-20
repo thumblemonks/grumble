@@ -7,11 +7,16 @@ ActionController::Routing::Routes.draw do |map|
   #      target GET    /targets/:id(.:format)      {:controller=>"targets", :action=>"show"}
   #             PUT    /targets/:id(.:format)      {:controller=>"targets", :action=>"update"}
   #             DELETE /targets/:id(.:format)      {:controller=>"targets", :action=>"destroy"}
+  # The resource helpers are fucking things up since we use periods like . and / in
+  # parameters (even though they're escaped)
   map.new_target '/targets',            :controller => 'targets', :action => 'new'
   map.target     '/targets/:target_id', :controller => 'targets', :action => 'show'
   
   map.new_grumble '/targets/:target_id/grumbles/new', :controller => 'grumbles', :action => 'new'
-  map.grumbles    '/targets/:target_id/grumbles',     :controller => 'grumbles', :action => 'index'
+  map.grumbles    '/targets/:target_id/grumbles',     :controller => 'grumbles', :action => 'index',
+                                                      :conditions => { :method => :get}
+  map.grumbles    '/targets/:target_id/grumbles',     :controller => 'grumbles', :action => 'create',
+                                                      :conditions => { :method => :post }
   map.grumble     '/targets/:target_id/grumbles/:id', :controller => 'grumbles', :action => 'show'
   
   map.grumbler    '/grumblers/:id',                   :controller => 'grumblers', :action => 'show'
@@ -55,6 +60,4 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
 end

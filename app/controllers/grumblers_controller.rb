@@ -1,2 +1,2 @@
-class GrumblersController < ApplicationController
+class GrumblersController < ApiController
 end

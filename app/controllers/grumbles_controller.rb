@@ -1,4 +1,4 @@
-class GrumblesController < ApplicationController
+class GrumblesController < ApiController
   before_filter :load_target
   rescue_from ActiveRecord::RecordInvalid,  :with => :record_invalid
     

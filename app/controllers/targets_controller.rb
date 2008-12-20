@@ -1,4 +1,4 @@
-class TargetsController < ApplicationController
+class TargetsController < ApiController
   rescue_from ActiveRecord::RecordNotFound, :with => :target_not_found
   rescue_from ActiveRecord::RecordInvalid,  :with => :record_invalid
   

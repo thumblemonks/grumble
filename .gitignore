@@ -1,4 +1,4 @@
-config/database.yml
+config/dblogin.yml
 log/*.log
 tmp/**/*
 .DS_Store

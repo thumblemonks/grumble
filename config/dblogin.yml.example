@@ -1,0 +1,14 @@
+development:
+  <<: *defaults
+  database: grumble_development
+  password: password
+  
+test:
+  <<: *defaults
+  database: grumble_test
+  password: password
+    
+production:
+  <<: *defaults
+  database: grumble_production
+  password: password

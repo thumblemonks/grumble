@@ -1,0 +1,23 @@
+<% override = Rails.root + "config/dblogin.yml" %>
+defaults: &defaults
+  adapter: mysql
+  username: root
+  password: foo
+  host: localhost
+  encoding: utf8
+  timezone: "+00:00"
+  socket: /opt/local/var/run/mysql5/mysqld.sock
+
+development:
+  <<: *defaults
+  database: grumble_development
+  
+test:
+  <<: *defaults
+  database: grumble_test
+    
+production:
+  <<: *defaults
+  database: grumble_production
+  
+<%= ERB.new(override.read, nil, nil, '_jerbout').result if override.exist? %>

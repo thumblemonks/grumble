@@ -59,7 +59,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_grumble_rails_session',
+    :session_key => '_grumble_session',
     :secret      => '46c3fad7e21dc9325121fc7250e13d4d6eeedbc50439558025d822805e4466f312750375cb2851b893224c529c28a8e3e2e4ca7e1369f49e58de0e69887ab48c'
   }
 

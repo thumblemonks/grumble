@@ -55,43 +55,54 @@ Grumble.Client = Class.create({
 // Private
 
   _newLoader: function(encloser) {
-    var now = new Date;
-    var loaderName = this._loaderName.evaluate({instanceNumber: now.getTime()});
+    var loaderName = this._loaderName.evaluate({instanceNumber: (new Date).getTime()});
     var loader = new Element('script', {'type': 'text/javascript', 'id': loaderName});
     loader.client = this;
     Object.extend(loader, this._loaderWrappers);
     encloser.call(this, loader);
     $$('head')[0].appendChild(loader);
     return loader;
+  },
+//
+// EXPERIMENTAL
+  postGrumble: function(grumbleData) {
+    var grumbleData = $H(grumbleData).inject($H(), function(collected,pair){
+      collected.set('grumble[#{0}]'.interpolate([pair.key]), pair.value);
+      return collected;
+    });
+    var doneName = 'grumble_poster_' + (new Date).getTime();
+    
+    var iframeTransport = {grumbleData: grumbleData, target: this.escapedURI(), doneName: doneName};
+    var posterFrame = new Element('iframe', {style: 'display: none;', src: this._loaderUrls.grumblePoster});
+    posterFrame.name = Object.toJSON(iframeTransport);
+    
+    var here = this;
+    var callbackProcessor = function(dataIframe, watchForName) {
+      var doneFrame = $A(window.frames).detect(function(fr){
+        try { return fr.name.match('//'+watchForName); } catch (e) { return false; }
+      })
+
+      if (!doneFrame) {
+        window.setTimeout(callbackProcessor.bind(here, dataIframe, watchForName), 100);
+      } else {
+        var grumbleResponse = doneFrame.name.evalJSON();
+        posterFrame.remove();
+        this.fireCallback('grumbleCreated', grumbleResponse);
+      }
+    };
+    
+    var loadObserver = function(evt){ 
+      evt.element().stopObserving('load', loadObserver);
+      callbackProcessor(evt.element(), doneName);
+    };
+    posterFrame.observe('load', loadObserver);
+
+    document.body.appendChild(posterFrame);
   }
-  
+// EXPERIMENTAL
+
 });
 
 
 //   
-//   postGrumble: function(grumbleData) {
-//     var iframeTransport = $H({grumble_data: grumbleData, target: this.currentUri(), status: 'loading'})
-//     var posterFrame = new Element('iframe', {name: iframeTransport.toJSON(), id: 'grumble_poster', 
-//                                   src: this.urlTemplates.grumblePoster, style: 'display: none;'});
-//     var that = this;
-//     var grumbleChecker = function(grumbler) { 
-//       var doneFrame = $A(window.frames).detect(function(fr){
-//         try {
-//           var frameName = fr.name;
-//           return fr.location.hash == '#grumbleDone';
-//         } catch(e) {
-//           return false;
-//         }
-//       });
-// 
-//       if (doneFrame) {
-//         that.grumbleCreated(doneFrame.name.evalJSON().grumble)
-//         posterFrame.remove()
-//       } else {
-//         window.setTimeout(grumbleChecker, 100);
-//       }
-//     }
-//     posterFrame.onload = function() { grumbleChecker(); posterFrame.onload = undefined; }
-//     document.body.appendChild(posterFrame);
-//   },
 

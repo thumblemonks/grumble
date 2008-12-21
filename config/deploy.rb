@@ -3,7 +3,7 @@ set :scm, :git
 set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
-set :repository,  "mercurial@aplikorecruit.com:git/grumble_rails.git"
+set :repository,  "mercurial@aplikorecruit.com:git/grumble.git"
 
 set :deploy_to, "/var/app/#{application}"
 set :user, "deploy"

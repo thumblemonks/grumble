@@ -4,7 +4,7 @@ class GrumblesController < ApiController
     
   def index
     grumbles = @target.grumbles.map { |grumble| grumble_attributes(grumble) }
-    render_json({:grumbles => grumbles}, :callback => 'getGrumbles')
+    render_json({:grumbles => grumbles}, :callback => 'grumblesFetched')
   end
 
   def create

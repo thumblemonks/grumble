@@ -1,6 +1,7 @@
 class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  session :off
+  # DEPRECATION WARNING: Disabling sessions for a single controller has been deprecated.
+  # session :off
   
 private
 
@@ -17,13 +18,19 @@ private
 
   def render_json(obj, opts = {})
     json = obj.to_json
-    json = "var grumbleData = (#{json});\n\nGrumble.#{opts[:callback]}(grumbleData)\n" if opts[:callback] && callback_requested?
+    if opts[:callback] && callback_requested?
+      json = json_with_callback(json, opts)
+    end
     response.content_type = 'application/json'
     render :text => json, :status => opts[:status] || :ok
   end
 
   def callback_requested?
-    params[:callback] == 'true'
+    !params[:callback].blank?
   end
 
+  def json_with_callback(json, opts)
+    "var grumbleData = (#{json});\n\ndocument.getElementById(#{params[:callback].to_json}).#{opts[:callback]}(grumbleData);\n" 
+  end
+  
 end

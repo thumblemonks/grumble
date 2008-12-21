@@ -9,6 +9,7 @@ class Target < ActiveRecord::Base
   def to_param
     uri
   end
+  
 private
 
   def validate_uri

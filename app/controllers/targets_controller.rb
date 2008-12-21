@@ -4,7 +4,7 @@ class TargetsController < ApiController
   
   def show
     load_target
-    render_json({:target => target_as_json_attributes(@target)}, :callback => 'getTarget')
+    render_json({:target => target_as_json_attributes(@target)}, :callback => 'targetFetched')
   end
 
 private

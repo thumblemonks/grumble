@@ -60,9 +60,9 @@ class TargetsControllerTest < ActionController::TestCase
       assert(@json_response['target']['grumble_count'] > 0)
     end
     
-    should "call a callback function if callback=true parameter is given" do
-      get :show, :target_id => "https://www.example.com/posts/12", :callback => 'true'
-      assert_match %r[Grumble.getTarget\(.*\)], @response.body
+    should "call a callback function if callback parameter is given" do
+      get :show, :target_id => "https://www.example.com/posts/12", :callback => 'grumble_loader_1234'
+      assert_match %r[document.getElementById\("grumble_loader_1234"\).targetFetched\(.*\)], @response.body
     end
     
   end # GET request (show)

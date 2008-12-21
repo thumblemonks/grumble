@@ -3,8 +3,8 @@ require 'test_helper'
 class GrumblesControllerTest < ActionController::TestCase
     
   should "call a callback function if callback=true parameter is given" do
-    get :index, :target_id => "http://www.example.com/posts/12/", :callback => "true"
-    assert_match %r[Grumble.getGrumbles\(.*\)], @response.body
+    get :index, :target_id => "http://www.example.com/posts/12/", :callback => "grumble_loader_1234"
+    assert_match %r[document.getElementById\("grumble_loader_1234"\).grumblesFetched\(.*\)], @response.body
   end
   
   context "GET request with valid target" do
@@ -113,8 +113,8 @@ class GrumblesControllerTest < ActionController::TestCase
       
       should "call a callback function if callback=true parameter is given" do
         grumble_attrs = Factory.attributes_for(:grumble)
-        post :create, :target_id => @target.uri, :grumble => grumble_attrs, :callback => 'true'
-        assert_match %r[Grumble.grumbleCreated\(.*\)], @response.body
+        post :create, :target_id => @target.uri, :grumble => grumble_attrs, :callback => 'grumble_poster_1234'
+        assert_match %r[document.getElementById\("grumble_poster_1234"\).grumbleCreated\(.*\)], @response.body
       end
       
       context "with valid grumble attributes" do

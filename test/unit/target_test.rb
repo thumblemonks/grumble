@@ -3,8 +3,6 @@ require 'test_helper'
 class TargetTest < ActiveSupport::TestCase
 
   should_have_many :grumbles
-  should_require_attributes :uri
-
 
   context "with an existing target" do
     setup { @target = Factory(:target) }
@@ -18,6 +16,20 @@ class TargetTest < ActiveSupport::TestCase
   context "validate uri-ness of uri" do
     setup do
       @target = Target.new
+    end
+    
+    should "require a uri" do
+      assert_bad_value(@target, :uri, nil, /does not have a valid/)
+    end
+    
+    should "normalize the url path" do
+      @target.uri = "http://www.example.com////hi/////guys"
+      assert_equal("http://www.example.com/hi/guys", @target.uri)
+    end
+    
+    should "preserve the fragment if given" do
+      @target.uri = "http://www.example.com/index.html#foo"
+      assert_equal("http://www.example.com/index.html#foo", @target.uri)
     end
     
     should "allow http as a URI scheme" do

@@ -1,3 +1,4 @@
+require 'pathname'
 class Target < ActiveRecord::Base
   VALID_URI_SCHEMES = %w[http https]
 
@@ -9,9 +10,22 @@ class Target < ActiveRecord::Base
   def to_param
     uri
   end
+
+  def uri=(uri_string)
+    normalized = normalize_uri(uri_string)
+    write_attribute(:uri, normalized)
+  end
   
 private
 
+  def normalize_uri(uri_string)
+    uri = URI.parse(uri_string.to_s)
+    uri.path = Pathname.new(uri.path).cleanpath.to_s
+    uri.to_s
+  rescue => e
+    return uri_string
+  end
+  
   def validate_uri
     parsed_uri = URI.parse(uri.to_s)
     validate_uri_scheme(parsed_uri)

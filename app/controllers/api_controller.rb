@@ -7,7 +7,7 @@ private
 
   def load_target
     raise(ActiveRecord::RecordNotFound) unless target_id = params[:target_id] 
-    @target = Target.find_or_initialize_by_uri(params[:target_id])
+    @target = Target.for_uri(params[:target_id])
     @target.new_record? ? @target.save! : true
   end
 

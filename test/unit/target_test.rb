@@ -11,6 +11,12 @@ class TargetTest < ActiveSupport::TestCase
     should "return URI as to_param" do
       assert_equal @target.uri, @target.to_param
     end
+    
+    should "search on normalized versions of the URI" do
+      bad_uri = @target.uri.gsub(%r{/([^/]+)$}, '////\1')
+      target = Target.for_uri(bad_uri)
+      assert_equal @target, target
+    end
   end
   
   context "validate uri-ness of uri" do

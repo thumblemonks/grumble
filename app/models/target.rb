@@ -7,18 +7,23 @@ class Target < ActiveRecord::Base
   validate :validate_uri
   has_many :grumbles, :order => 'created_at DESC'
 
+  def self.for_uri(uri)
+    uri = normalize_uri(uri)
+    find_or_initialize_by_uri(uri)
+  end
+  
   def to_param
     uri
   end
 
   def uri=(uri_string)
-    normalized = normalize_uri(uri_string)
+    normalized = self.class.normalize_uri(uri_string)
     write_attribute(:uri, normalized)
   end
   
 private
 
-  def normalize_uri(uri_string)
+  def self.normalize_uri(uri_string)
     uri = URI.parse(uri_string.to_s)
     uri.path = Pathname.new(uri.path).cleanpath.to_s
     uri.to_s

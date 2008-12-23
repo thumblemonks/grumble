@@ -83,6 +83,7 @@ Grumble.Client = Class.create({
       })
 
       if (!doneFrame) {
+        console.log('Timed out. Waiting.')
         window.setTimeout(callbackProcessor.bind(here, dataIframe, watchForName), 100);
       } else {
         var grumbleResponse = doneFrame.name.evalJSON();

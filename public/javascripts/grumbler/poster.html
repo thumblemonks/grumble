@@ -11,7 +11,7 @@
 
     new Ajax.Request(postGrumbles.evaluate({target: passedData.target}), {
       method: 'post', parameters: passedData.grumbleData,
-      onSuccess: function(transport) {
+      onComplete: function(transport) {
         window.name = '//'+passedData.doneName+';\n'+Object.toJSON(transport.responseText.evalJSON());
         var newLoc = (decodeURIComponent(passedData.target).split('/', 3).concat(['favicon.ico#grumbleDone'])).join('/');
         window.location = newLoc;

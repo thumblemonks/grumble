@@ -9,12 +9,12 @@ defaults: &defaults
   socket: /opt/local/var/run/mysql5/mysqld.sock
 
 development:
-  <<: *defaults
-  database: grumble_development
+  adapter: sqlite3
+  database: db/development.db
   
 test:
-  <<: *defaults
-  database: grumble_test
+  adapter: sqlite3
+  database: db/test.db
     
 production:
   <<: *defaults

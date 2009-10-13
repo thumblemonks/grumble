@@ -4,7 +4,7 @@ class GrumbleTest < ActiveSupport::TestCase
 
   should_belong_to :target
   should_belong_to :grumbler
-  should_require_attributes :subject, :body
+  should_validate_presence_of :subject, :body
   should_have_db_column :anon_grumbler_name
 
 
@@ -33,7 +33,7 @@ class GrumbleTest < ActiveSupport::TestCase
 
   context "a grumble" do
     setup { @grumble = Factory(:grumble) }
-    should_require_unique_attributes :uuid
+    should_validate_uniqueness_of :uuid
     
     should "return the uuid when converting to a param" do
       assert_equal @grumble.uuid, @grumble.to_param
@@ -52,7 +52,7 @@ class GrumbleTest < ActiveSupport::TestCase
     context "without registered grumbler" do
       setup { @grumble.stubs(:grumbler).returns(nil) }
       
-      should_require_attributes :anon_grumbler_name
+      should_validate_presence_of :anon_grumbler_name
 
       should "use the name stored on the grumble as grumbler_name" do
         @grumble.anon_grumbler_name = "Foo Bar"

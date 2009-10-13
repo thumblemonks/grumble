@@ -6,7 +6,7 @@ class TargetTest < ActiveSupport::TestCase
 
   context "with an existing target" do
     setup { @target = Factory(:target) }
-    should_require_unique_attributes :uri  
+    should_validate_uniqueness_of :uri  
     
     should "return URI as to_param" do
       assert_equal @target.uri, @target.to_param

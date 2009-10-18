@@ -38,7 +38,7 @@
     }},
     
     testEscapedURIShouldReturnAnEscapedVersionOfTheObjectsUri: function() { with(this) {
-      assertEqual("http%3A%2F%2Fwww%2Eexample%2Ecom", grumbleClient.escapedURI());
+      assertEqual("http%253A%252F%252Fwww%252Eexample%252Ecom", grumbleClient.escapedURI());
     }},
     
     // _newLoader tests
@@ -63,7 +63,7 @@
       var uriMatch = loader.src.match('http://.*/targets/([^?]+)\?')[1];
       var cbMatch = loader.src.match('http://.*/targets/.*\?.*callback=(.*)')[1];
       // %2E or . because browsers suck.
-      assertMatch("http%3A%2F%2Fwww(%2E|\.)example(%2E|\.)com", uriMatch);
+      assertMatch("http%253A%252F%252Fwww(%252E|\.)example(%252E|\.)com", uriMatch);
       assertEqual(loader.id, cbMatch);
     }},
     
@@ -96,7 +96,7 @@
       var uriMatch = loader.src.match('http://.*/targets/([^?/]+)/grumbles\?')[1];
       var cbMatch = loader.src.match('http://.*/targets/.*\?.*callback=(.*)')[1];
       // %2E or . because browsers suck.
-      assertMatch("http%3A%2F%2Fwww(%2E|\.)example(%2E|\.)com", uriMatch);
+      assertMatch("http%253A%252F%252Fwww(%252E|\.)example(%252E|\.)com", uriMatch);
       assertEqual(loader.id, cbMatch);
     }},
 

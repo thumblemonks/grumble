@@ -1,8 +1,5 @@
 class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  # DEPRECATION WARNING: Disabling sessions for a single controller has been deprecated.
-  # session :off
-  
 private
 
   def load_target

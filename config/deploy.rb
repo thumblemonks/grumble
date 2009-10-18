@@ -8,7 +8,7 @@ set :repository,  "mercurial@aplikorecruit.com:git/grumble.git"
 set :deploy_to, "/var/app/#{application}"
 set :user, "deploy"
 set :use_sudo, false
-set :runner, nil
+# set :runner, :app
 
 role :app, "grumble.annealer.org"
 role :web, "grumble.annealer.org"
@@ -21,15 +21,27 @@ ln -nfs #{shared_path}/config/dblogin.yml #{release_path}/config/dblogin.yml
 CMD
 end
 
-namespace :passenger do
-  desc "Restart Application"
-  task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
+# If you are using Passenger mod_rails uncomment this:
+# if you're still using the script/reapear helper you will need
+# these http://github.com/rails/irs_process_scripts
+namespace :deploy do
+  task(:start) {}
+  task(:stop) {}
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "touch #{current_path}/tmp/restart.txt}"
     puts "love."
   end
 end
 
-after :deploy, "passenger:restart"
+# namespace :passenger do
+#   desc "Restart Application"
+#   task :restart do
+#     run "touch #{current_path}/tmp/restart.txt"
+#     puts "love."
+#   end
+# end
+
+# after :deploy, "passenger:restart"
 set :cold_deploy, false
 before("deploy:cold") { set :cold_deploy, true }
 

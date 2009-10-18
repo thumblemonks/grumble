@@ -45,7 +45,7 @@ Grumble.Client = Class.create({
   },
   
   escapedURI: function() {
-    return encodeURIComponent(this.uri).gsub('\\.', '%2E');  
+    return encodeURIComponent(this.uri).gsub('\\.', '%2E').gsub('\%', '%25');  
   },
   
   fireCallback: function(callbackName, data) {

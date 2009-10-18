@@ -18,5 +18,5 @@ private
      :new_grumble_url   => new_grumble_url(:target_id => @target),
      :grumble_index_url => grumbles_url(:target_id => @target)}
   end
-    
+
 end

@@ -24,13 +24,13 @@ class Target < ActiveRecord::Base
 private
 
   def self.normalize_uri(uri_string)
-    uri = URI.parse(uri_string.to_s)
+    uri = URI.parse(URI.unescape(uri_string.to_s))
     uri.path = Pathname.new(uri.path).cleanpath.to_s
     uri.to_s
   rescue => e
     return uri_string
   end
-  
+
   def validate_uri
     parsed_uri = URI.parse(uri.to_s)
     validate_uri_scheme(parsed_uri)

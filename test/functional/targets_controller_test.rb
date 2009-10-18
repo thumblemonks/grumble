@@ -2,6 +2,9 @@ require 'test_helper'
 
 class TargetsControllerTest < ActionController::TestCase
 
+  should_route :get, '/targets/http:%2F%2Fgusg.us%2Fcode%2Faffirmation-of-a-programmer.html',
+    :action => :show, :target_id => "http://gusg.us/code/affirmation-of-a-programmer.html"
+
   context "GET request" do    
     context "with a valid URI that has no grumbles" do
       
